@@ -1,6 +1,14 @@
 [workspace]
 resolver = "3"
-members = ["basics"]
+members = ["projects/*"]
+
+[workspace.dependencies]
+cortex-m = "0.7.9"
+cortex-m-rt = "0.7.6"
+stm32f4 = { version = "0.16.0", features = ["stm32f405"] }
+panic-halt = "1.0.0"
+embedded-hal = "1.0.0"
+stm32f4xx-hal = { version = "0.23.0", features = ["stm32f405"] }
 
 # [profile.dev]
 # debug = true
@@ -11,3 +19,4 @@ members = ["basics"]
 debug = true
 # panic = "abort"
 codegen-units = 1
+lto = true

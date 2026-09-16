@@ -4,9 +4,14 @@ machine LoadPlatformDescription @platforms/boards/stm32f4_discovery-kit.repl
 # showAnalyzer sysbus.usart2
 logLevel -1 sysbus.gpioPortD.UserLED
 
+# stm32f4.repl hard-codes systickFrequency: 72000000; SysDelay clocks SysTick from
+# HCLK/8 = 2 MHz at HSI, and Renode ignores the CLKSOURCE bit (Divider stays 1).
+# Both settings live in the macro because `machine Reset` restores model defaults.
 macro reset
 """
     cpu VectorTableOffset 0x08000000
+    sysbus.nvic Frequency 2000000
 """
+runMacro $reset
 
 machine StartGdbServer 3333

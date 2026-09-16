@@ -9,9 +9,6 @@ runner = [
     "-ex", "load",
     "-ex", "monitor machine Reset",
     "-ex", "maintenance flush register-cache",
-    # "-ex", "set $sp = *(unsigned int*)0x08000000",
-    # "-ex", "rbreak main$",
-    # "-ex", 'rbreak ::main$\|__cortex_m_rt_main$',
-    "-ex", "break *basics::main",
-    # "-ex", "continue",
+    "-ex", "break *basics::main", # break in prolog of basics::main
+    "-ex", "rbreak ::__cortex_m_rt_main$", # break on first line of cortex-m-rt::entry
 ]
