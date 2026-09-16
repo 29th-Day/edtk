@@ -1,0 +1,41 @@
+name: Deploy book
+
+on:
+    push:
+        branches: [main]
+    workflow_dispatch:
+
+concurrency:
+    group: pages
+    cancel-in-progress: false
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        env:
+            MDBOOK_VERSION: 0.5.4
+        steps:
+            - uses: actions/checkout@v7
+            - name: Install mdBook
+              run: |
+                  curl -L https://github.com/rust-lang/mdBook/releases/download/v$MDBOOK_VERSION/mdbook-v$MDBOOK_VERSION-x86_64-unknown-linux-gnu.tar.gz \
+                    | tar -xz -C /usr/local/bin
+            - run: mdbook build book
+            - uses: actions/upload-pages-artifact@v5
+              with:
+                  path: book/book
+
+    deploy:
+        needs: build
+        runs-on: ubuntu-latest
+        permissions:
+            pages: write
+            id-token: write
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        steps:
+            - id: deployment
+              uses: actions/deploy-pages@v5

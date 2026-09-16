@@ -1,4 +1,4 @@
-# The Embedded Developer's Toolkit
+# An Embedded Developer's Toolkit
 
 ## License
 
